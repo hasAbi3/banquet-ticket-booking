@@ -94,7 +94,7 @@ radio.addEventListener('change', function () {
 });
 
 async function fetchBookedSeats() {
-    const response = await fetch('${baseURL}/booked-seats');
+    const response = await fetch(`${baseURL}booked-seats`);
     const bookedSeats = await response.json();
 
     // Mark booked seats as unavailable
@@ -187,7 +187,7 @@ confirmPaymentButton.addEventListener('click', async () => {
         return;
     }
 
-    const response = await fetch("${baseURL}/create-payment-intent", {
+    const response = await fetch(`${baseURL}create-payment-intent`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount: totalAmount * 100 }), // amount in cents
@@ -211,7 +211,7 @@ confirmPaymentButton.addEventListener('click', async () => {
         alert('Payment successful! Your seat(s) are booked.');
 
         //Send booking data to the server
-        const bookingResponse = await fetch("${baseURL}/book-seat", {
+        const bookingResponse = await fetch(`${baseURL}book-seat`, {
             method: "POST",
             headers: {
                 'Content-Type' : "application/json"
@@ -230,7 +230,7 @@ confirmPaymentButton.addEventListener('click', async () => {
             console.error('Failed to save booking', await bookingResponse.json())
         }
 
-        const emailResponse = await fetch("${baseURL}/send-receipt",{
+        const emailResponse = await fetch(`${baseURL}send-receipt`,{
             method: "POST",
             headers:{
                 'Content-Type': "application/json"
