@@ -2,6 +2,7 @@ const seatsContainer = document.getElementById('seats-container');
 const ticketCountDisplay = document.getElementById('ticket-count');
 const totalAmountDisplay = document.getElementById('total-amount');
 const bookNowButton = document.getElementById('book-now');
+const baseURL = 'https://banquet-ticket-booking.onrender.com/';
 
 
 let ticketPrice = 10; // Default price is for Performer ($10)
@@ -93,7 +94,7 @@ radio.addEventListener('change', function () {
 });
 
 async function fetchBookedSeats() {
-    const response = await fetch('http://localhost:3000/booked-seats');
+    const response = await fetch('${baseURL}/booked-seats');
     const bookedSeats = await response.json();
 
     // Mark booked seats as unavailable
@@ -186,7 +187,7 @@ confirmPaymentButton.addEventListener('click', async () => {
         return;
     }
 
-    const response = await fetch("http://localhost:3000/create-payment-intent", {
+    const response = await fetch("${baseURL}/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount: totalAmount * 100 }), // amount in cents
@@ -210,7 +211,7 @@ confirmPaymentButton.addEventListener('click', async () => {
         alert('Payment successful! Your seat(s) are booked.');
 
         //Send booking data to the server
-        const bookingResponse = await fetch("http://localhost:3000/book-seat", {
+        const bookingResponse = await fetch("${baseURL}/book-seat", {
             method: "POST",
             headers: {
                 'Content-Type' : "application/json"
@@ -229,7 +230,7 @@ confirmPaymentButton.addEventListener('click', async () => {
             console.error('Failed to save booking', await bookingResponse.json())
         }
 
-        const emailResponse = await fetch("http://localhost:3000/send-receipt",{
+        const emailResponse = await fetch("${baseURL}/send-receipt",{
             method: "POST",
             headers:{
                 'Content-Type': "application/json"
