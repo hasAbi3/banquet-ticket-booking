@@ -99,6 +99,15 @@ app.post('/send-receipt', async (req, res) => {
     }
 });
 
+
+// Serve static files (like CSS and JS) from the root directory
+app.use(express.static(__dirname));
+
+// Default route to serve index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
