@@ -34,7 +34,7 @@ app.post("/create-payment-intent", async(req, res) =>{
         const paymentIntent = await stripe.paymentIntents.create({
             amount: amount,
             currency: "usd",
-            payment_method_types : ["card"]
+            payment_method_types : ["card","venmo","cashapp"]
         });
         res.send({clientSecret: paymentIntent.client_secret});
     }catch(err)

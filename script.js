@@ -10,6 +10,10 @@ let selectedSeatsCount = 0;
 let totalAmount = 0;
 
 const seatingLayout = [
+[' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+[' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+[' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+[' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
 ['A1', 'A2', 'A3', 'A4', '', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11', 'A12', 'A13', 'A14', '', 'A15', 'A16', 'A17', 'A18', 'A19', 'A20', 'A21'],
 ['B1', 'B2', 'B3', 'B4', 'B5', '', 'B6', 'B7', 'B8', 'B9', 'B10', 'B11', 'B12', 'B13', 'B14', 'B15', 'B16', 'B17', 'B18', 'B19', 'B20', 'B21', '', 'B22', 'B23', 'B24', 'B25', 'B26', 'B27', 'B28', 'B29', 'B30', 'B31'],
 ['C1', 'C2', 'C3', 'C4', 'C5', '', 'C6', 'C7', 'C8', 'C9', 'C10', 'C11', 'C12', 'C13', 'C14', 'C15', 'C16', 'C17', 'C18', 'C19', 'C20', 'C21', '', 'C22', 'C23', 'C24', 'C25', 'C26', 'C27', 'C28', 'C29', 'C30', 'C31'],
@@ -118,11 +122,12 @@ const paymentMessage = document.getElementById('payment-message');
 
 let stripe;
 let card;
+let paymentRequest;
 
 // Function to set up Stripe and create the card element
 function setupStripe() {
     // Your Stripe setup code here
-    stripe = Stripe('your-publishable-key');
+    stripe = Stripe('pk_test_51Q5plDL2c4svBG73Iw7RkK179r5xIQibaPeDedHuywcpWnipAVS30vkDxjYezQxLH9dj0w6yVCrppg3QlhQm4pKP00cetbAWWQ');
     const elements = stripe.elements();
 
     // Create a card element
@@ -138,6 +143,29 @@ function setupStripe() {
 
     card = elements.create('card', { style: cardStyle });
     card.mount('#card-element');
+
+    //paymentRequest for venmo
+    paymentRequest = stripe.paymentRequest({
+        country:'US',
+        currency: 'usd',
+        total:{
+            label: 'Total Amount',
+            amount: totalAmount *100
+        },
+        requestPayerName: true,
+        requestPayerEmail: true
+    })
+    
+    // Check if the payment request is available and show the Payment Request Button (Venmo included)
+    const prButton = elements.create('paymentRequestButton', { paymentRequest: paymentRequest });
+    paymentRequest.canMakePayment().then(function(result) {
+
+        if (result) {
+            prButton.mount('#payment-request-button'); // Add this button in your HTML
+        } else {
+            document.getElementById('payment-request-button').style.display = 'none';
+        }
+    });
 }
 
 // Call the setup function
@@ -186,6 +214,21 @@ confirmPaymentButton.addEventListener('click', async () => {
         alert("Please enter your name and email.");
         return;
     }
+
+    //First,check if the user is using venmo or other method
+    if (paymentMethod=== 'venmo')
+    {
+        const result = await paymentRequest.show();
+
+        if(result.error)
+        {
+            alert("Payment failed: " + result.error.message)
+        } else{
+            alert("Payment successful via venmo");
+        }
+    }
+    else
+    {
 
     const response = await fetch(`${baseURL}create-payment-intent`, {
         method: "POST",
@@ -252,6 +295,7 @@ confirmPaymentButton.addEventListener('click', async () => {
         bookingModal.style.display = 'none'; // Close modal
         // Reset selected seats
         resetBooking();
+}
     
 });
 
