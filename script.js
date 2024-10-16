@@ -159,7 +159,7 @@ function setupStripe() {
     // Check if the payment request is available and show the Payment Request Button (Venmo included)
     const prButton = elements.create('paymentRequestButton', { paymentRequest: paymentRequest });
     paymentRequest.canMakePayment().then(function(result) {
-
+        console.log(result+"u");
         if (result) {
             prButton.mount('#payment-request-button'); // Add this button in your HTML
         } else {
@@ -204,6 +204,16 @@ closeButton.addEventListener('click', function () {
     bookingModal.style.display = 'none';
 });
 
+async function fetchClientSecret() {
+    const response = await fetch(`${baseURL}create-payment-intent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: totalAmount * 100 }), // amount in cents
+    });
+    const { clientSecret } = await response.json();
+    return { clientSecret };
+}
+
 // Confirm payment button click
 confirmPaymentButton.addEventListener('click', async () => {
     const name = customerNameInput.value;
@@ -224,7 +234,24 @@ confirmPaymentButton.addEventListener('click', async () => {
         {
             alert("Payment failed: " + result.error.message)
         } else{
-            alert("Payment successful via venmo");
+            const { clientSecret } = await fetchClientSecret();
+
+            // Confirm Venmo payment
+            const venmoResult = await stripe.confirmPayment({
+                clientSecret: clientSecret,
+                payment_method: {
+                    type: 'venmo',
+                },
+            });
+
+            if (venmoResult.error) {
+                alert('Payment failed: ' + venmoResult.error.message);
+            } else if (venmoResult.paymentIntent.status === 'succeeded') {
+                alert('Payment successful via Venmo!');
+                // Proceed with booking the seats
+                await processBooking();
+            }
+
         }
     }
     else
