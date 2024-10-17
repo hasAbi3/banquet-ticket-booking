@@ -161,7 +161,7 @@ function setupStripe() {
     paymentRequest.canMakePayment().then(function(result) {
         console.log(result+"u");
         if (result) {
-            prButton.mount('#payment-request-button'); // Add this button in your HTML
+            prButton.mount('#payment-request-button'); 
         } else {
             document.getElementById('payment-request-button').style.display = 'none';
         }
@@ -239,9 +239,7 @@ confirmPaymentButton.addEventListener('click', async () => {
             // Confirm Venmo payment
             const venmoResult = await stripe.confirmPayment({
                 clientSecret: clientSecret,
-                payment_method: {
-                    type: 'venmo',
-                },
+                payment_method: result.paymentIntent.payment_method,
             });
 
             if (venmoResult.error) {
