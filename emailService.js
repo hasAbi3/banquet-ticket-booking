@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 // Function to send email
 const sendReceiptEmail = (to, seatNumber, amount) => {
     const mailOptions = {
-        from: 'abishaghimire2000@gmail.com',
+        from: 'sasatarang@gmail.com',
         to: to,
         subject: 'Your Payment Receipt',
         text: `Thank you for your payment!\n\nYou have booked seat: ${seatNumber}\nTotal Amount Paid: $${amount}\n\nThank you!`,
