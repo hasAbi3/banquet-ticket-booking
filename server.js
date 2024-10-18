@@ -28,9 +28,8 @@ app.post("/create-payment-intent", async(req, res) =>{
     {
         return res.status(400).send({error: 'Please select at least one seat.'});
     }
-    console.log("our")
+
     try{
-        console.log("1")
         //create a payment intent
         const paymentIntent = await stripe.paymentIntents.create({
             amount: amount,
@@ -38,7 +37,6 @@ app.post("/create-payment-intent", async(req, res) =>{
             payment_method_types: ["card"]
         });
         res.send({clientSecret: paymentIntent.client_secret});
-        console.log("2",{clientSecret})
     }catch(err)
     {
         console.error(err);
