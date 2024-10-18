@@ -168,7 +168,7 @@ bookNowButton.addEventListener('click', function () {
 
     const processingFee = document.getElementById('processing-fee');
     // Calculate the processing fee and round it to two decimal places
-    const fee = Number((totalAmount * 0.029 + 0.30).toFixed(2));
+    const fee = Number((totalAmount * 0.029 + 0.32).toFixed(2));
     processingFee.innerText = `$${fee}`;
 
     const finalprice = document.getElementById('total-charge');
