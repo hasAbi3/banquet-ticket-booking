@@ -212,8 +212,6 @@ confirmPaymentButton.addEventListener('click', async () => {
 
     const { clientSecret } = await response.json();
 
-    console.log('Received client secret:', clientSecret);
-
     const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
             card: card,
