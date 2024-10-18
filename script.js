@@ -8,6 +8,7 @@ const baseURL = 'https://banquet-ticket-booking.onrender.com/';
 let ticketPrice = 10; // Default price is for Performer ($10)
 let selectedSeatsCount = 0;
 let totalAmount = 0;
+let finalCharge =0;
 
 const seatingLayout = [
 [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
@@ -122,7 +123,6 @@ const paymentMessage = document.getElementById('payment-message');
 
 let stripe;
 let card;
-let paymentRequest;
 
 // Function to set up Stripe and create the card element
 function setupStripe() {
@@ -143,29 +143,6 @@ function setupStripe() {
 
     card = elements.create('card', { style: cardStyle });
     card.mount('#card-element');
-
-    //paymentRequest for venmo
-    paymentRequest = stripe.paymentRequest({
-        country:'US',
-        currency: 'usd',
-        total:{
-            label: 'Total Amount',
-            amount: totalAmount *100
-        },
-        requestPayerName: true,
-        requestPayerEmail: true
-    })
-    
-    // Check if the payment request is available and show the Payment Request Button (Venmo included)
-    const prButton = elements.create('paymentRequestButton', { paymentRequest: paymentRequest });
-    paymentRequest.canMakePayment().then(function(result) {
-        console.log(result+"u");
-        if (result) {
-            prButton.mount('#payment-request-button'); 
-        } else {
-            document.getElementById('payment-request-button').style.display = 'none';
-        }
-    });
 }
 
 // Call the setup function
@@ -189,6 +166,17 @@ bookNowButton.addEventListener('click', function () {
     const modalTotalAmount = document.getElementById('modal-total-amount');
     modalTotalAmount.innerText = `$${totalAmount}`;
 
+    const processingFee = document.getElementById('processing-fee');
+    // Calculate the processing fee and round it to two decimal places
+    const fee = Number((totalAmount * 0.029 + 0.30).toFixed(2));
+    processingFee.innerText = `$${fee}`;
+
+    const finalprice = document.getElementById('total-charge');
+    finalCharge = totalAmount + fee;
+
+    finalprice.innerText = `$${finalCharge}`;
+
+
     // Display selected seats in the modal
     const selectedSeatsDisplay = document.getElementById('selected-seats');
     const selectedSeats = [...document.querySelectorAll('.seat.selected')].map(seat => seat.innerText).join(', ');
@@ -204,15 +192,6 @@ closeButton.addEventListener('click', function () {
     bookingModal.style.display = 'none';
 });
 
-async function fetchClientSecret() {
-    const response = await fetch(`${baseURL}create-payment-intent`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: totalAmount * 100 }), // amount in cents
-    });
-    const { clientSecret } = await response.json();
-    return { clientSecret };
-}
 
 // Confirm payment button click
 confirmPaymentButton.addEventListener('click', async () => {
@@ -223,45 +202,17 @@ confirmPaymentButton.addEventListener('click', async () => {
     if (!name || !email) {
         alert("Please enter your name and email.");
         return;
-    }
-
-    //First,check if the user is using venmo or other method
-    if (paymentMethod=== 'venmo')
-    {
-        const result = await paymentRequest.show();
-
-        if(result.error)
-        {
-            alert("Payment failed: " + result.error.message)
-        } else{
-            const { clientSecret } = await fetchClientSecret();
-
-            // Confirm Venmo payment
-            const venmoResult = await stripe.confirmPayment({
-                clientSecret: clientSecret,
-                payment_method: result.paymentIntent.payment_method,
-            });
-
-            if (venmoResult.error) {
-                alert('Payment failed: ' + venmoResult.error.message);
-            } else if (venmoResult.paymentIntent.status === 'succeeded') {
-                alert('Payment successful via Venmo!');
-                // Proceed with booking the seats
-                await processBooking();
-            }
-
-        }
-    }
-    else
-    {
+    } 
 
     const response = await fetch(`${baseURL}create-payment-intent`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: totalAmount * 100 }), // amount in cents
+        body: JSON.stringify({ amount: finalCharge * 100 }), // amount in cents
     });
 
     const { clientSecret } = await response.json();
+
+    console.log('Received client secret:', clientSecret);
 
     const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
@@ -288,7 +239,7 @@ confirmPaymentButton.addEventListener('click', async () => {
                 seats: selectedSeats.split(", "),
                 name: name,
                 email:email,
-                amount: totalAmount,
+                amount: finalCharge,
             })
         });
 
@@ -306,7 +257,7 @@ confirmPaymentButton.addEventListener('click', async () => {
             body: JSON.stringify({
                 to: email,
                 seatNumber: selectedSeats,
-                amount: totalAmount,
+                amount: finalCharge,
             })
         })
         if (emailResponse.ok) {
@@ -320,8 +271,6 @@ confirmPaymentButton.addEventListener('click', async () => {
         bookingModal.style.display = 'none'; // Close modal
         // Reset selected seats
         resetBooking();
-}
-    
 });
 
 // Function to reset the booking state

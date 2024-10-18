@@ -54,17 +54,17 @@
      <div id="booking-modal" class="modal" style="display: none;">
         <div class="modal-content">
           <span class="close-button">&times;</span>
-            <h2> Your Total: <span id="modal-total-amount">$0</span> </h2>
-            <h2>Your Selected Seats:  <span id="selected-seats"></span></h2>
+            <h3>Your Selected Seats:  <span id="selected-seats"></span></h3>
+            <h3> Price: <span id="modal-total-amount">$0</span> </h3>
+            <h3> Processing fee: <span id = "processing-fee"> $0</span></h3>
+            
+            <h3> Your total: <span id= "total-charge">$0</span></h3>
             
           <h3>Enter Your Details</h3>
           <input type="text" id="customer-name" placeholder="Your Name" required /></br>
           <input type="email" id="customerEmail" placeholder="Your Email" required />
 
           <div id="card-element"></div>
-          <!-- Payment Request Button (Venmo) -->
-          <div id="payment-request-button"></div> <!-- Venmo button appears here -->
-          
           <button id="confirm-payment">Confirm Payment</button>
           <div id="payment-message"></div>
         </div>
