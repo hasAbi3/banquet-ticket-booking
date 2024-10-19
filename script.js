@@ -127,7 +127,7 @@ let card;
 // Function to set up Stripe and create the card element
 function setupStripe() {
     // Your Stripe setup code here
-    stripe = Stripe('pk_test_51Q5plDL2c4svBG73Iw7RkK179r5xIQibaPeDedHuywcpWnipAVS30vkDxjYezQxLH9dj0w6yVCrppg3QlhQm4pKP00cetbAWWQ');
+    stripe = Stripe('pk_live_51Q5plDL2c4svBG735JvaL7FRGVo1O3AVqoG8EnceV4yBusnPiXawZjWDguxiE8UeoZ7wFmybqylX3xnfLf68yKOL007Y5hu7WS');
     const elements = stripe.elements();
 
     // Create a card element
@@ -150,7 +150,7 @@ setupStripe();
 
 // Initialize Stripe and Card Element
 document.addEventListener("DOMContentLoaded", function () {
-    stripe = Stripe("pk_test_51Q5plDL2c4svBG73Iw7RkK179r5xIQibaPeDedHuywcpWnipAVS30vkDxjYezQxLH9dj0w6yVCrppg3QlhQm4pKP00cetbAWWQ");
+    stripe = Stripe("pk_live_51Q5plDL2c4svBG735JvaL7FRGVo1O3AVqoG8EnceV4yBusnPiXawZjWDguxiE8UeoZ7wFmybqylX3xnfLf68yKOL007Y5hu7WS");
     const elements = stripe.elements();
 
     card = elements.create('card');
