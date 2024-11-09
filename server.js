@@ -23,6 +23,7 @@ mongoose.connect (mongoURL,{
 //Payment Route
 app.post("/create-payment-intent", async(req, res) =>{
     const { amount } = req.body;
+    console.log("Final charge amount:", finalCharge);
 
     if (!amount)
     {
