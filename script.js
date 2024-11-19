@@ -195,7 +195,12 @@ closeButton.addEventListener('click', function () {
 });
 
 
+confirmPaymentButton.addEventListener('click', () => alert("The Booking has been closed. We won't be accepting any payments!"))
+
+
 // Confirm payment button click
+// Booking Closed
+/*
 confirmPaymentButton.addEventListener('click', async () => {
     const name = customerNameInput.value;
     const email = customerEmailInput.value;
@@ -272,6 +277,8 @@ confirmPaymentButton.addEventListener('click', async () => {
         // Reset selected seats
         resetBooking();
 });
+*/
+
 
 // Function to reset the booking state
 function resetBooking() {

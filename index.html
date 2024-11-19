@@ -18,14 +18,6 @@
     <script src="https://js.stripe.com/v3/"></script>
     <script src="script.js" defer></script>
 
-    <!--INactive site-->
-    <script>
-      // Show alert on page load
-      window.onload = function() {
-        alert("Ticket booking has been closed.");
-      };
-    </script>
-
     
   </head>
   <body>
@@ -54,15 +46,9 @@
         <div>
           <span id="ticket-count">0</span> Tickets - $<span id="total-amount">0</span>
         </div>
-        <button id="book-now" disabled>Book Now</button>
+        <button id="book-now">Book Now</button>
       </div>
 
-    </div>
-
-    <!--INactive site-->
-    <div id="booking-modal" class="modal" >
-      <div class="modal-content">Ticket booking have been closed.
-        </div>
     </div>
 
 
@@ -86,6 +72,5 @@
         </div>
       </div>
 
-    
   </body>
 </html>
