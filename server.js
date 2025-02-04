@@ -23,7 +23,6 @@ mongoose.connect (mongoURL,{
 //Payment Route
 app.post("/create-payment-intent", async(req, res) =>{
     const { amount } = req.body;
-    console.log("Final charge amount:", finalCharge);
 
     if (!amount)
     {
@@ -54,7 +53,7 @@ app.post("/book-seat", async(req, res) =>{
         for (const seatNumber of seats){
             const existingSeat= await Seat.findOne({seatNumber});
             if(existingSeat && existingSeat.isBooked){
-                return res.status(400).json({messagae: "Seat ${seatNumber} is already booked"})
+                return res.status(400).json({message: `Seat ${seatNumber} is already booked`})
             }
             //Create and save the new seat
             const newSeat = new Seat({
@@ -87,6 +86,17 @@ app.get('/booked-seats', async (req, res) => {
     res.json(bookedSeats);
 });
 
+
+/** TO CLEAR OUT THE DATABASE 
+app.get('/clear-collection', async (req, res) => {
+    try {
+      await Ticket.deleteMany({});
+      res.send('Collection ticket emptied successfully.');
+    } catch (error) {
+      res.status(500).send('Error clearing collection.');
+    }
+  });
+*/
 
 // Email sending endpoint
 app.post('/send-receipt', async (req, res) => {

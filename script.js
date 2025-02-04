@@ -4,8 +4,7 @@ const totalAmountDisplay = document.getElementById('total-amount');
 const bookNowButton = document.getElementById('book-now');
 const baseURL = 'https://banquet-ticket-booking.onrender.com/';
 
-
-let ticketPrice = 10; // Default price is for Performer ($10)
+let ticketPrice = 12; // Default price is for Performer ($10)
 let selectedSeatsCount = 0;
 let totalAmount = 0;
 let finalCharge =0;
@@ -129,7 +128,7 @@ let card;
 // Function to set up Stripe and create the card element
 function setupStripe() {
     // Your Stripe setup code here
-    stripe = Stripe('pk_live_51Q5plDL2c4svBG735JvaL7FRGVo1O3AVqoG8EnceV4yBusnPiXawZjWDguxiE8UeoZ7wFmybqylX3xnfLf68yKOL007Y5hu7WS');
+    stripe = Stripe('pk_live_51QlxPpHMPnBplVGJK1gZeVy5CWZPz2yavSkTIgQytnbNONZJ0F1kjG2c1gn9fI1NoQs22O0ITjIR80MkDWgLSbsk00PpwsSpbD');
     const elements = stripe.elements();
 
     // Create a card element
@@ -152,7 +151,7 @@ setupStripe();
 
 // Initialize Stripe and Card Element
 document.addEventListener("DOMContentLoaded", function () {
-    stripe = Stripe("pk_live_51Q5plDL2c4svBG735JvaL7FRGVo1O3AVqoG8EnceV4yBusnPiXawZjWDguxiE8UeoZ7wFmybqylX3xnfLf68yKOL007Y5hu7WS");
+    stripe = Stripe("pk_live_51QlxPpHMPnBplVGJK1gZeVy5CWZPz2yavSkTIgQytnbNONZJ0F1kjG2c1gn9fI1NoQs22O0ITjIR80MkDWgLSbsk00PpwsSpbD");
     const elements = stripe.elements();
 
     card = elements.create('card');
@@ -194,13 +193,11 @@ closeButton.addEventListener('click', function () {
     bookingModal.style.display = 'none';
 });
 
-
-confirmPaymentButton.addEventListener('click', () => alert("The Booking has been closed. We won't be accepting any payments!"))
+// TO CLOSE THE PAYMENTS
+//confirmPaymentButton.addEventListener('click', () => alert("The Booking has been closed. We won't be accepting any payments!"))
 
 
 // Confirm payment button click
-// Booking Closed
-/*
 confirmPaymentButton.addEventListener('click', async () => {
     const name = customerNameInput.value;
     const email = customerEmailInput.value;
@@ -277,8 +274,6 @@ confirmPaymentButton.addEventListener('click', async () => {
         // Reset selected seats
         resetBooking();
 });
-*/
-
 
 // Function to reset the booking state
 function resetBooking() {
