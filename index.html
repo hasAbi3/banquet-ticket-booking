@@ -26,10 +26,10 @@
 
       <!-- Ticket Type Selector -->
       <div class="ticket-types">
-        <input type="radio" id="child" name="ticket-type" value="12" checked />
-        <label for="child">Volunteer: $12</label>
+        <input type="radio" id="child" name="ticket-type" value="12" disabled />
+        <label for="child" onclick="alert('Volunteer tickets are only sold in person')">Volunteer: $12</label>
 
-        <input type="radio" id="student" name="ticket-type" value="15" />
+        <input type="radio" id="student" name="ticket-type" value="15" checked />
         <label for="student">Student: $15</label>
 
         <input type="radio" id="adult" name="ticket-type" value="20" />
