@@ -4,7 +4,7 @@ const totalAmountDisplay = document.getElementById('total-amount');
 const bookNowButton = document.getElementById('book-now');
 const baseURL = 'https://banquet-ticket-booking.onrender.com/';
 
-let ticketPrice = 12; // Default price is for Performer ($10)
+let ticketPrice = 15; // Default price is for Performer ($10)
 let selectedSeatsCount = 0;
 let totalAmount = 0;
 let finalCharge =0;
