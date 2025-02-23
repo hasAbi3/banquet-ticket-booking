@@ -194,9 +194,9 @@ closeButton.addEventListener('click', function () {
 });
 
 // TO CLOSE THE PAYMENTS
-//confirmPaymentButton.addEventListener('click', () => alert("The Booking has been closed. We won't be accepting any payments!"))
+confirmPaymentButton.addEventListener('click', () => alert("The Booking has been closed. We won't be accepting any payments!"))
 
-
+/*
 // Confirm payment button click
 confirmPaymentButton.addEventListener('click', async () => {
     const name = customerNameInput.value;
@@ -273,7 +273,7 @@ confirmPaymentButton.addEventListener('click', async () => {
         bookingModal.style.display = 'none'; // Close modal
         // Reset selected seats
         resetBooking();
-});
+});*/
 
 // Function to reset the booking state
 function resetBooking() {
