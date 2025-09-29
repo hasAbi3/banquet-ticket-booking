@@ -87,16 +87,17 @@ app.get('/booked-seats', async (req, res) => {
 });
 
 
-/** TO CLEAR OUT THE DATABASE 
-app.get('/clear-collection', async (req, res) => {
-    try {
-      await Ticket.deleteMany({});
-      res.send('Collection ticket emptied successfully.');
-    } catch (error) {
-      res.status(500).send('Error clearing collection.');
-    }
-  });
-*/
+/** TO CLEAR OUT THE DATABASE */
+// app.get('/clear-collection', async (req, res) => {
+//     try {
+//       await Ticket.deleteMany({});
+//       await Seat.deleteMany({});
+//       res.send('Collection ticket emptied successfully.');
+//     } catch (error) {
+//       res.status(500).send('Error clearing collection.');
+//     }
+//   });
+
 
 // Email sending endpoint
 app.post('/send-receipt', async (req, res) => {
