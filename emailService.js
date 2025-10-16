@@ -2,12 +2,20 @@ require('dotenv').config();
 
 const nodemailer = require("nodemailer")
 // Create a transporter object using SMTP settings
+// const transporter = nodemailer.createTransport({
+//     service: 'Gmail', // Use your email provider
+//     auth: {
+//         user: 'sasatarang@gmail.com', // Your email address
+//         pass: process.env.email_password, 
+//     },
+// });
+
 const transporter = nodemailer.createTransport({
-    service: 'Gmail', // Use your email provider
-    auth: {
-        user: 'sasatarang@gmail.com', // Your email address
-        pass: process.env.email_password, 
-    },
+  service: "SendGrid",
+  auth: {
+    user: "apikey",
+    pass: process.env.SENDGRID_API_KEY
+  }
 });
 
 // Function to send email
